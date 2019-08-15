@@ -6,7 +6,7 @@ else
 	CFLAGS+=-DNDEBUG
 endif
 
-all: test test_standalone waitgdb.so
+all: test test_standalone waitgdb.so astyle
 
 test: test.o waitgdb.o
 
