@@ -43,6 +43,7 @@ int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
 			return -1;
 		}
 	}
+	return sigaction_orig(signum, act, oldact);
 }
 
 /* Our fake main() that gets called by __libc_start_main() */
