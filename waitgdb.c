@@ -1,7 +1,19 @@
+#include <errno.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <stdio.h>
 #include <dlfcn.h>
+
+// Trampolines for the real functions
+static int (*main_orig)(int, char **, char **);
+static typeof(&sigaction) sigaction_orig;
+static const int my_signals[] = {
+	SIGABRT,
+	SIGBUS,
+	SIGFPE,
+	SIGILL,
+	SIGSEGV,
+};
 
 static void handler(int signum, siginfo_t *siginfo, void *wat)
 {
@@ -17,15 +29,21 @@ void waitgdb_install_sighandlers(void)
 	act.sa_mask = set;
 	act.sa_flags = SA_SIGINFO;
 
-	sigaction(SIGABRT, &act, 0);
-	sigaction(SIGBUS, &act, 0);
-	sigaction(SIGFPE, &act, 0);
-	sigaction(SIGILL, &act, 0);
-	sigaction(SIGSEGV, &act, 0);
+	for (int i = 0; i < sizeof(my_signals); ++i) {
+		sigaction_orig(my_signals[i], &act, 0);
+	}
 }
 
-/* Trampoline for the real main() */
-static int (*main_orig)(int, char **, char **);
+// forbid redefining our signals
+int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
+{
+	for (int i = 0; i < sizeof(my_signals); ++i) {
+		if (signum == my_signals[i]) {
+			errno = EACCES;
+			return -1;
+		}
+	}
+}
 
 /* Our fake main() that gets called by __libc_start_main() */
 int main_hook(int argc, char **argv, char **envp)
@@ -53,6 +71,7 @@ int __libc_start_main(
 
 	/* Find the real __libc_start_main()... */
 	typeof(&__libc_start_main) orig = dlsym(RTLD_NEXT, "__libc_start_main");
+	sigaction_orig = dlsym(RTLD_NEXT, "sigaction");
 
 	/* ... and call it with our custom main function */
 	return orig(main_hook, argc, argv, init, fini, rtld_fini, stack_end);
