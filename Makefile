@@ -6,7 +6,7 @@ else
 	CFLAGS+=-DNDEBUG
 endif
 
-all: test waitgdb.so
+all: test test_standalone waitgdb.so
 
 test: test.o waitgdb.o
 
@@ -14,7 +14,7 @@ waitgdb.so: waitgdb.o
 	$(CC) $(CFLAGS) $(LDFLAGS) waitgdb.o -o waitgdb.so -shared
 
 clean:
-	rm -rf *.o test waitgdb.so
+	rm -rf *.o test test_standalone waitgdb.so
 
 astyle:
 	astyle --style=linux --indent=tab *.c *.h
