@@ -1,1 +1,1 @@
-void install_sighandlers(void);
+void waitgdb_install_sighandlers(void);

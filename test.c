@@ -3,6 +3,6 @@
 
 int main()
 {
-	install_sighandlers();
+	waitgdb_install_sighandlers();
 	abort();
 }
