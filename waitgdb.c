@@ -16,4 +16,8 @@ void install_sighandlers(void)
 	act.sa_flags = SA_SIGINFO;
 
 	sigaction(SIGABRT, &act, 0);
+	sigaction(SIGBUS, &act, 0);
+	sigaction(SIGFPE, &act, 0);
+	sigaction(SIGILL, &act, 0);
+	sigaction(SIGSEGV, &act, 0);
 }
