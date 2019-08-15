@@ -3,7 +3,8 @@ Small shared library that allows you to stop the program on crash to allow attac
 
 ## Installation
 `make`
+
 `make install` or `checkinstall`
 
 ## Usage
-LD_PRELOAD=/usr/local/lib/waitgdb.so your-app
+`LD_PRELOAD=/usr/local/lib/waitgdb.so your-app`
