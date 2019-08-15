@@ -1,0 +1,6 @@
+Stop the program on crash to allow attaching a debugger (like gdb) on POSIX systems.
+
+Usage:
+make
+cp waitgdb.so /usr/local/lib/
+LD_PRELOAD=/usr/local/lib/waitgdb.so your-app
