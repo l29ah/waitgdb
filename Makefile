@@ -1,5 +1,6 @@
 CFLAGS+=-std=gnu11 -D_GNU_SOURCE -fPIC
 LDFLAGS+=-ldl
+DESTDIR+=/usr/local/
 ifdef DEBUG
 	CFLAGS+=-ggdb -DDEBUG -O0 -Wall -pedantic
 else
@@ -22,8 +23,8 @@ astyle:
 
 .PHONY: install
 install:
-	cp waitgdb.so /usr/local/lib/
+	cp waitgdb.so $(DESTDIR)/lib/
 
 .PHONY: uninstall
 uninstall:
-	rm waitgdb.so /usr/local/lib/waitgdb.so
+	rm waitgdb.so $(DESTDIR)/lib/waitgdb.so
