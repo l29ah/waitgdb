@@ -8,13 +8,14 @@ endif
 
 PRODUCTS=test test_standalone waitgdb.so
 prefix=/usr/local
+libdir=$(prefix)/lib
 
 .PHONY: all install clean
 
 all: $(PRODUCTS) astyle
 
 install: waitgdb.so
-	install -D waitgdb.so $(prefix)/lib/waitgdb.so
+	install -D waitgdb.so $(libdir)/waitgdb.so
 
 test: test.o waitgdb.o
 
