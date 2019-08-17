@@ -1,5 +1,5 @@
 CFLAGS+=-std=gnu11 -D_GNU_SOURCE -fPIC
-LDFLAGS+=-ldl
+LDLIBS+=-ldl
 ifdef DEBUG
 	CFLAGS+=-ggdb -DDEBUG -O0 -Wall -pedantic
 else
