@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <dlfcn.h>
 
+#define ARRAY_SIZE(a)   (sizeof(a) / sizeof((a)[0]))
+
 // Trampolines for the real functions
 static int (*main_orig)(int, char **, char **);
 static typeof(&sigaction) sigaction_orig;
@@ -29,7 +31,7 @@ void waitgdb_install_sighandlers(void)
 	act.sa_mask = set;
 	act.sa_flags = SA_SIGINFO;
 
-	for (unsigned i = 0; i < sizeof(my_signals); ++i) {
+	for (unsigned i = 0; i < ARRAY_SIZE(my_signals); ++i) {
 		sigaction_orig(my_signals[i], &act, 0);
 	}
 }
@@ -37,7 +39,7 @@ void waitgdb_install_sighandlers(void)
 // forbid redefining our signals
 int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
 {
-	for (unsigned i = 0; i < sizeof(my_signals); ++i) {
+	for (unsigned i = 0; i < ARRAY_SIZE(my_signals); ++i) {
 		if (signum == my_signals[i]) {
 			errno = EACCES;
 			return -1;
