@@ -20,7 +20,7 @@ install: waitgdb.so
 test: test.o waitgdb.o
 
 waitgdb.so: waitgdb.o
-	$(CC) $(CFLAGS) $(LDFLAGS) waitgdb.o -o waitgdb.so -shared
+	$(CC) $(CFLAGS) $(LDFLAGS) waitgdb.o $(LDLIBS) -o waitgdb.so -shared
 
 clean:
 	rm -rf *.o $(PRODUCTS)
