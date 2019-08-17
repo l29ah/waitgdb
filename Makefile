@@ -14,7 +14,7 @@ prefix=/usr/local
 all: $(PRODUCTS) astyle
 
 install: waitgdb.so
-	install waitgdb.so $(prefix)/lib/
+	install -D waitgdb.so $(prefix)/lib/waitgdb.so
 
 test: test.o waitgdb.o
 
